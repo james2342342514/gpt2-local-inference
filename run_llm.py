@@ -1,6 +1,10 @@
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
 
+print(f"PyTorch version: {torch.__version__}")
+print(f"CUDA available: {torch.cuda.is_available()}")
+print(f"CUDA version: {torch.version.cuda}")
+
 # Check if CUDA is available and set the device
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Using device: {device}")
@@ -16,7 +20,9 @@ def generate_text(prompt, max_length=100):
     return tokenizer.decode(outputs[0], skip_special_tokens=True)
 
 # Example usage
-prompt = "The future of artificial intelligence is"
+prompt = "What is the future of Artifical Intelligence"
 generated_text = generate_text(prompt)
 print(f"Prompt: {prompt}")
 print(f"Generated text: {generated_text}")
+
+
