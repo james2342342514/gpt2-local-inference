@@ -1,17 +1,152 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Text Generation</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Colorful Text Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(45deg, #f3ec78, #af4261);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+        }
+        h1 {
+            color: #af4261;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #af4261;
+            border-radius: 5px;
+            resize: vertical;
+            min-height: 100px;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #af4261;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #8e3450;
+        }
+        #generated-text {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            white-space: pre-wrap;
+        }
+        .rainbow-text {
+            background-image: linear-gradient(to left, violet, indigo, blue, green, yellow, orange, red);
+            -webkit-background-clip: text;
+            color: transparent;
+            animation: rainbow-animation 50s linear infinite;
+            background-size: 200% 100%;
+        }
+        @keyframes rainbow-animation {
+            0% { background-position: 0 0; }
+            100% { background-position: 200% 0; }
+        }
+        #loading {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .lds-ripple {
+            display: inline-block;
+            position: relative;
+            width: 80px;
+            height: 80px;
+        }
+        .lds-ripple div {
+            position: absolute;
+            border: 4px solid #af4261;
+            opacity: 1;
+            border-radius: 50%;
+            animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+        }
+        .lds-ripple div:nth-child(2) {
+            animation-delay: -0.5s;
+        }
+        @keyframes lds-ripple {
+            0% {
+                top: 36px;
+                left: 36px;
+                width: 0;
+                height: 0;
+                opacity: 1;
+            }
+            100% {
+                top: 0px;
+                left: 0px;
+                width: 72px;
+                height: 72px;
+                opacity: 0;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>Text Generation</h1>
-    <form method="POST">
-        <textarea name="prompt" rows="4" cols="50">{{ prompt if prompt else '' }}</textarea><br>
-        <input type="submit" value="Generate">
-    </form>
-    {% if generated_text %}
-    <h2>Generated Text:</h2>
-    <p>{{ generated_text }}</p>
-    {% endif %}
+    <div class="container">
+        <h1 class="rainbow-text">Colorful Text Generator</h1>
+        <form id="generate-form" method="POST">
+            <textarea name="prompt" id="prompt" rows="4" placeholder="Enter your prompt here...">{{ prompt if prompt else '' }}</textarea>
+            <button type="submit">Generate Colorful Text</button>
+        </form>
+        <div id="loading">
+            <div class="lds-ripple"><div></div><div></div></div>
+            <p>Generating colorful text...</p>
+        </div>
+        <div id="generated-text" class="rainbow-text">
+            {% if generated_text %}
+            {{ generated_text }}
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('generate-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('generated-text').innerHTML = '';
+            
+            fetch('/', {
+                method: 'POST',
+                body: new FormData(this)
+            })
+            .then(response => response.text())
+            .then(html => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const generatedText = doc.getElementById('generated-text').innerHTML;
+                document.getElementById('generated-text').innerHTML = generatedText;
+                document.getElementById('loading').style.display = 'none';
+            });
+        });
+    </script>
 </body>
 </html>
