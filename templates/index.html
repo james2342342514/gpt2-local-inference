@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Colorful Text Generator</title>
+    <title>GPT-2 chatbot</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -54,11 +54,13 @@
             background-color: #8e3450;
         }
         #generated-text {
-            margin-top: 20px;
-            padding: 15px;
-            background-color: #f0f0f0;
+            background-color: white;
+            color: black;
+            font-size: 16px;
+            line-height: 1.5;
+            padding: 20px;
             border-radius: 5px;
-            white-space: pre-wrap;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         .rainbow-text {
             background-image: linear-gradient(to left, violet, indigo, blue, green, yellow, orange, red);
@@ -112,7 +114,7 @@
 </head>
 <body>
     <div class="container">
-        <h1 class="rainbow-text">Colorful Text Generator</h1>
+        <h1 class="black">GPT-2 chatbot</h1>
         <form id="generate-form" method="POST">
             <textarea name="prompt" id="prompt" rows="4" placeholder="Enter your prompt here...">{{ prompt if prompt else '' }}</textarea>
             <button type="submit">Generate Colorful Text</button>
